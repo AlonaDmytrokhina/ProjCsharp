@@ -1,0 +1,39 @@
+﻿<Window x:Class="AppZodiac.Views.ZodiacWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AppZodiac.Views"
+        mc:Ignorable="d"
+                                Title="ZodiacSign" Height="450" Width="800" MinHeight="300" MinWidth="300"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="5*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Name="tbAge" Text="Age:" FontSize="22"
+       HorizontalAlignment="Left" Grid.Row="0" Grid.Column="0"/>
+        <TextBlock Text="{Binding Age}" FontSize="22"
+        HorizontalAlignment="Left" Grid.Row="0" Grid.Column="0" Margin="60,0,0,0"/>
+
+        <TextBlock Name="tbZodiakSign" Text="{Binding WesternZodiac}" FontSize="22"
+       HorizontalAlignment="Left" Grid.Row="1" Grid.Column="0"/>
+        <TextBlock Name="tbChineseZodiak" Text="{Binding ChineseZodiac}" FontSize="22"
+       HorizontalAlignment="Left" Grid.Row="1" Grid.Column="1"/>
+
+        <TextBlock Name="tbZodiakPrediction" Text="{Binding WesternZodiacPrediction}" FontSize="14" 
+       HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap"
+       Grid.Row="1" Grid.Column="0"/>
+        <TextBlock Name="tbChinesePrediction" Text="{Binding ChineseZodiacPrediction}" FontSize="14" 
+       HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap"
+       Grid.Row="1" Grid.Column="1"/>
+
+    </Grid>
+</Window>

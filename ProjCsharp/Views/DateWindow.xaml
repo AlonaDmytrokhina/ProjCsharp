@@ -1,0 +1,25 @@
+﻿<Window x:Class="AppZodiac.Views.DateWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AppZodiac.Views"
+        mc:Ignorable="d"
+                        Title="DateWindow" Height="450" Width="800" MinHeight="300" MinWidth="300"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="4*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <TextBlock FontSize="22" Text="Choose your date of birth:" 
+                       HorizontalAlignment="Center" Margin="0,0,0,30"/>
+            <DatePicker SelectedDate="{Binding SelectedDate, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" 
+                        Width="250" Height="60" Margin="0,0,0,25"/>
+            <Button Width="150" Height="50" Content="Confirm" Command="{Binding ConfirmCommand}"/>
+        </StackPanel>
+    </Grid>
+</Window>
+
