@@ -27,6 +27,7 @@ namespace AppPerson.Models
 
         public Person(string name, string surname, string? email, DateTime? birthDate)
         {
+            Thread.Sleep(2000); //artificial delay
             Name = name;
             Surname = surname;
             Email = email;
@@ -101,7 +102,7 @@ namespace AppPerson.Models
             return false;
         }
 
-        internal static int CalculateAge(DateTime birthDate)
+        private int CalculateAge(DateTime birthDate)
         {
             DateTime today = DateTime.Today;
             int age = today.Year - birthDate.Year;

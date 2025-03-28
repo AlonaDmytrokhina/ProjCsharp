@@ -23,12 +23,14 @@ namespace AppPerson.ViewModels
 
         public event PropertyChangedEventHandler? PropertyChanged;
         private RelayCommand _proceedCommand;
-        public Action _toMainView { get; }
+        private Action _toMainView { get; }
 
-        public bool IsValid => !string.IsNullOrWhiteSpace(FirstName) &&
+        private bool IsValid => !string.IsNullOrWhiteSpace(FirstName) &&
                        !string.IsNullOrWhiteSpace(LastName) &&
                        !string.IsNullOrWhiteSpace(Email) &&
                        BirthDate.HasValue;
+        private bool _isEnabled = true;
+        private Visibility _loaderVisibile = Visibility.Collapsed;
 
         public string FirstName
         {
@@ -82,20 +84,60 @@ namespace AppPerson.ViewModels
             }
         }
 
+        public bool IsEnabled
+        {
+            get
+            {
+                return _isEnabled;
+            }
+            set
+            {
+                _isEnabled = value;
+                OnPropertyChanged(nameof(IsEnabled));
+            }
+        }
+
+        public Visibility LoaderVisible
+        {
+            get
+            {
+                return _loaderVisibile;
+            }
+            set
+            {
+                _loaderVisibile = value;
+                OnPropertyChanged(nameof(LoaderVisible));
+            }
+        }
+
         public PersonViewModel(Action toMainView)
         {
             _toMainView = toMainView;
         }
 
-        private void Proceed()
+        private async void Proceed()
         {
-
-            person = new Person(FirstName, LastName, Email, BirthDate);
-
-            if (!IsApropriate())
+            try
             {
+                IsEnabled = false;
+                LoaderVisible = Visibility.Visible;
+                person = await Task.Run(() => new Person(FirstName, LastName, Email, BirthDate));
+                if (!IsApropriate())
+                {
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Login failed: {ex.Message}");
                 return;
             }
+            finally 
+            { 
+                IsEnabled = true;
+                LoaderVisible = Visibility.Collapsed;
+            }
+
 
             if (person.IsBirthday())
             {
