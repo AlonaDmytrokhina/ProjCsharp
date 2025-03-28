@@ -20,9 +20,13 @@ namespace AppPerson
         public MainWindow()
         {
             InitializeComponent();
-            var personWindow = new PersonView();
-            personWindow.Show();
-            this.Hide();
+
+            Content = new PersonView(toMainView);
+        }
+
+        private void toMainView()
+        {
+            Content = new MainView();
         }
     }
 }

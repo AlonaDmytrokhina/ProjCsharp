@@ -25,7 +25,7 @@ namespace AppPerson.Models
         public int? Age { get => _age;}
         #endregion
 
-        Person(string name, string surname, string? email, DateTime? birthDate)
+        public Person(string name, string surname, string? email, DateTime? birthDate)
         {
             Name = name;
             Surname = surname;
@@ -37,9 +37,9 @@ namespace AppPerson.Models
             }
         }
 
-        Person(string name, string surname, DateTime birthDate) : this(name, surname, null, birthDate){}
+        public Person(string name, string surname, DateTime birthDate) : this(name, surname, null, birthDate){}
 
-        Person(string name, string surname, string email) : this(name, surname, email, null){}
+        public Person(string name, string surname, string email) : this(name, surname, email, null){}
 
 
         public bool isAdult()

@@ -1,5 +1,4 @@
-﻿using AppPerson.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,14 +16,13 @@ using System.Windows.Shapes;
 namespace AppPerson.Views
 {
     /// <summary>
-    /// Interaction logic for PersonView.xaml
+    /// Interaction logic for MainView.xaml
     /// </summary>
-    public partial class PersonView : UserControl
+    public partial class MainView : UserControl
     {
-        public PersonView(Action toMainView)
+        public MainView()
         {
             InitializeComponent();
-            DataContext = new PersonViewModel(toMainView);
         }
     }
 }
