@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
+using AppPerson.ExceptionHandling;
 
 namespace AppPerson.Models
 {
@@ -18,35 +15,97 @@ namespace AppPerson.Models
         #endregion
 
         #region Properties
-        public string Name { get => _name; set => _name = value; }
-        public string Surname { get => _surname; set => _surname = value; }
-        public string? Email { get => _email; set => _email = value; }
-        public DateTime? BirthDate { get => _birthDate; set => _birthDate = value; }
-        public int? Age { get => _age;}
+        public string Name
+        {
+            get => _name;
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value) || !Regex.IsMatch(value, @"^[A-Za-zА-Яа-яЇїІіЄєҐґ'-]+$"))
+                {
+                    throw new UnrealisticNameException(value);
+                }
+                _name = value;
+            }
+        }
+
+        public string Surname
+        {
+            get => _surname;
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value) || !Regex.IsMatch(value, @"^[A-Za-zА-Яа-яЇїІіЄєҐґ'-]+$"))
+                {
+                    throw new UnrealisticNameException(value);
+                }
+                _surname = value;
+            }
+        }
+
+        public string? Email
+        {
+            get => _email;
+            set
+            {
+                if (!string.IsNullOrEmpty(value) && !Regex.IsMatch(value, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+                {
+                    throw new InvalidEmailException(value);
+                }
+                _email = value;
+            }
+        }
+
+        public DateTime? BirthDate
+        {
+            get => _birthDate;
+            set
+            {
+                if (!value.HasValue) throw new ArgumentNullException(nameof(BirthDate), "Birth date cannot be null.");
+
+                if (value > DateTime.Today)
+                {
+                    throw new FutureBirthDateException(value.Value);
+                }
+                if (value < new DateTime(1900, 1, 1))
+                {
+                    throw new UnrealisticBirthDateException(value.Value);
+                }
+
+                _birthDate = value;
+                _age = CalculateAge(value.Value);
+
+                if (_age < 18)
+                {
+                    throw new IsNotAdultException();
+                }
+            }
+        }
+
+        public int? Age
+        {
+            get => _age;
+        }
         #endregion
 
+        #region Constructors
         public Person(string name, string surname, string? email, DateTime? birthDate)
         {
-            Thread.Sleep(2000); //artificial delay
             Name = name;
             Surname = surname;
             Email = email;
             BirthDate = birthDate;
-            if (BirthDate.HasValue)
-            {
-                _age = CalculateAge(BirthDate.Value);
-            }
         }
 
-        public Person(string name, string surname, DateTime birthDate) : this(name, surname, null, birthDate){}
+        public Person(string name, string surname, DateTime birthDate) : this(name, surname, null, birthDate) { }
 
-        public Person(string name, string surname, string email) : this(name, surname, email, null){}
+        public Person(string name, string surname, string email) : this(name, surname, email, null) { }
+        #endregion
 
-
+        #region Methods
         public bool isAdult()
         {
 
-            if (BirthDate.HasValue && _age < 18) {
+            if (BirthDate.HasValue && _age < 18)
+            {
                 return false;
             }
 
@@ -55,10 +114,7 @@ namespace AppPerson.Models
 
         public string SunSign()
         {
-            if(!BirthDate.HasValue)
-            {
-                return "Unknown";
-            }
+            if (!BirthDate.HasValue) return "Unknown";
 
             int day = BirthDate.Value.Day;
             int month = BirthDate.Value.Month;
@@ -83,10 +139,7 @@ namespace AppPerson.Models
 
         public string ChineseSign()
         {
-            if (!BirthDate.HasValue)
-            {
-                return "Unknown";
-            }
+            if (!BirthDate.HasValue) return "Unknown";
 
             string[] animals = { "Monkey", "Rooster", "Dog", "Pig", "Rat", "Ox", "Tiger", "Rabbit", "Dragon", "Snake", "Horse", "Goat" };
             return animals[BirthDate.Value.Year % 12];
@@ -94,12 +147,8 @@ namespace AppPerson.Models
 
         public bool IsBirthday()
         {
-            if (BirthDate.HasValue && BirthDate.Value.DayOfYear == DateTime.Today.DayOfYear)
-            {
-                return true;
-            }
-
-            return false;
+            Thread.Sleep(2000); // artificial delay
+            return BirthDate.HasValue && BirthDate.Value.DayOfYear == DateTime.Today.DayOfYear;
         }
 
         private int CalculateAge(DateTime birthDate)
@@ -109,5 +158,6 @@ namespace AppPerson.Models
             if (birthDate.Date > today.AddYears(-age)) age--;
             return age;
         }
+        #endregion
     }
 }

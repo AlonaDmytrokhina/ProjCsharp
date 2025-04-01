@@ -1,4 +1,5 @@
-﻿using AppPerson.Models;
+﻿using AppPerson.ExceptionHandling;
+using AppPerson.Models;
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
@@ -117,15 +118,42 @@ namespace AppPerson.ViewModels
 
         private async void Proceed()
         {
+            bool isBirthday = false;
             try
             {
                 IsEnabled = false;
                 LoaderVisible = Visibility.Visible;
                 person = await Task.Run(() => new Person(FirstName, LastName, Email, BirthDate));
-                if (!IsApropriate())
-                {
-                    return;
-                }
+                isBirthday = await Task.Run(() => person.IsBirthday());
+                //if (!IsApropriate())
+                //{
+                //    return;
+                //}
+            }
+            catch (FutureBirthDateException ex)
+            {
+                MessageBox.Show($"Login failed: {ex.Message}");
+                return;
+            }
+            catch (UnrealisticBirthDateException ex)
+            {
+                MessageBox.Show($"Login failed: {ex.Message}");
+                return;
+            }
+            catch (InvalidEmailException ex)
+            {
+                MessageBox.Show($"Login failed: {ex.Message}");
+                return;
+            }
+            catch (UnrealisticNameException ex)
+            {
+                MessageBox.Show($"Login failed: {ex.Message}");
+                return;
+            }
+            catch (IsNotAdultException ex)
+            {
+                MessageBox.Show($"Login failed: {ex.Message}");
+                return;
             }
             catch (Exception ex)
             {
@@ -138,11 +166,7 @@ namespace AppPerson.ViewModels
                 LoaderVisible = Visibility.Collapsed;
             }
 
-
-            if (person.IsBirthday())
-            {
-                MessageBox.Show($"Happy {person.Age}-th birthday!");
-            }
+            BirthdayCheck(isBirthday);
 
             MessageBox.Show($"Login was successfull for user {FirstName} {LastName}");
            _toMainView();
@@ -169,6 +193,17 @@ namespace AppPerson.ViewModels
 
 
             return true;
+        }
+
+        private bool BirthdayCheck(bool isBirthday) 
+        {
+            if (isBirthday)
+            {
+                MessageBox.Show($"Happy {person.Age}-th birthday!");
+                return true;
+            }
+
+            return false;
         }
 
         protected void OnPropertyChanged(string propertyName)
