@@ -125,10 +125,6 @@ namespace AppPerson.ViewModels
                 LoaderVisible = Visibility.Visible;
                 person = await Task.Run(() => new Person(FirstName, LastName, Email, BirthDate));
                 isBirthday = await Task.Run(() => person.IsBirthday());
-                //if (!IsApropriate())
-                //{
-                //    return;
-                //}
             }
             catch (FutureBirthDateException ex)
             {
@@ -170,29 +166,6 @@ namespace AppPerson.ViewModels
 
             MessageBox.Show($"Login was successfull for user {FirstName} {LastName}");
            _toMainView();
-        }
-
-        private bool IsApropriate()
-        {
-
-            if (BirthDate >= DateTime.Today)
-            {
-                MessageBox.Show("Choose the correct date.");
-                return false;
-            }
-            else if (person.Age >= 120)
-            {
-                MessageBox.Show($"I don't believe you're {person.Age} years old.\nChoose the correct date.");
-                return false;
-            }
-            else if (!person.isAdult())
-            {
-                MessageBox.Show($"18+ access only!");
-                return false;
-            }
-
-
-            return true;
         }
 
         private bool BirthdayCheck(bool isBirthday) 
