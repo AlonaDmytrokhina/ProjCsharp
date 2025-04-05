@@ -11,7 +11,7 @@ namespace AppPerson.Models
         private string _surname;
         private string? _email;
         private DateTime? _birthDate;
-        private int? _age;
+        private int? _age; 
         #endregion
 
         #region Properties

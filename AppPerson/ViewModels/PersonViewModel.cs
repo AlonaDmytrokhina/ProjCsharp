@@ -16,6 +16,7 @@ namespace AppPerson.ViewModels
 {
     internal class PersonViewModel : INotifyPropertyChanged
     {
+        #region Fields
         private Person person;
         private string _firstName;
         private string _lastName;
@@ -25,14 +26,15 @@ namespace AppPerson.ViewModels
         public event PropertyChangedEventHandler? PropertyChanged;
         private RelayCommand _proceedCommand;
         private Action _toMainView { get; }
-
         private bool IsValid => !string.IsNullOrWhiteSpace(FirstName) &&
                        !string.IsNullOrWhiteSpace(LastName) &&
                        !string.IsNullOrWhiteSpace(Email) &&
                        BirthDate.HasValue;
         private bool _isEnabled = true;
         private Visibility _loaderVisibile = Visibility.Collapsed;
+        #endregion
 
+        #region Properties
         public string FirstName
         {
             get => _firstName;
@@ -115,6 +117,7 @@ namespace AppPerson.ViewModels
         {
             _toMainView = toMainView;
         }
+        #endregion
 
         private async void Proceed()
         {
