@@ -6,7 +6,25 @@
         xmlns:local="clr-namespace:AppPersonList"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
 
-    </Grid>
+    <DockPanel Margin="10">
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="0 0 0 10">
+            <TextBox Width="200" Margin="0 0 10 0" Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}"/>
+            <Button Content="Додати" Command="{Binding AddCommand}" Width="100" Margin="0 0 10 0"/>
+            <Button Content="Видалити" Command="{Binding RemoveCommand}" Width="100"/>
+        </StackPanel>
+
+        <DataGrid ItemsSource="{Binding FilteredPeople}" SelectedItem="{Binding SelectedPerson}" AutoGenerateColumns="False" CanUserAddRows="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Ім'я" Binding="{Binding Name}" />
+                <DataGridTextColumn Header="Прізвище" Binding="{Binding Surname}" />
+                <DataGridTextColumn Header="Email" Binding="{Binding Email}" />
+                <DataGridTextColumn Header="Дата нар." Binding="{Binding BirthDate, StringFormat=d}" />
+                <DataGridTextColumn Header="Вік" Binding="{Binding Age}" />
+                <DataGridTextColumn Header="18+" Binding="{Binding IsAdult}" />
+                <DataGridTextColumn Header="Знак Зодіаку (західний)" Binding="{Binding SunSign}" />
+                <DataGridTextColumn Header="Знак Зодіаку (китайський)" Binding="{Binding ChineseSign}" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
 </Window>
