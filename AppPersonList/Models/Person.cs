@@ -88,7 +88,7 @@ namespace AppPersonList.Models
         {
             get => _age;
         }
-        public bool IsAdult { get; set; }
+        public bool IsAdult { get; private set; }
         public string SunSign
         {
             get => _sunSign;

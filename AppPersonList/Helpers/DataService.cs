@@ -16,12 +16,12 @@ namespace AppPersonList.Helpers
 
         public static List<Person> Load()
         {
-            if (!File.Exists(FilePath))
-                return null;
+            if (!File.Exists(FilePath)) return new List<Person>();
 
             var json = File.ReadAllText(FilePath);
-            return JsonSerializer.Deserialize<List<Person>>(json);
+            return JsonSerializer.Deserialize<List<Person>>(json) ?? new List<Person>();
         }
+
 
         public static void Save(IEnumerable<Person> people)
         {
